@@ -55,6 +55,8 @@ export type {
   FeatureGenerateRequest,
   FeatureDiscoveryRequest,
   FeatureDiscoveryEvent,
+  FeatureExtractionRequest,
+  FeatureExtractionEvent,
   CandidateFeature,
   FeatureBatchCreateRequest,
   // KPI

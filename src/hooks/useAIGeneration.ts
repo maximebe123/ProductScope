@@ -2,10 +2,9 @@
  * Hook for text-based AI diagram generation with CRUD operations
  */
 
-import { useState, useCallback } from 'react'
+import { useCallback } from 'react'
 import type { Node, Edge } from 'reactflow'
 import type {
-  GenerationStatus,
   PositionedDiagram,
   OperationResponse,
   DiagramContext,
@@ -16,6 +15,10 @@ import type {
 } from '../types/ai'
 import type { BaseNodeData } from '../components/Nodes'
 import { executeOperation } from '../services/aiApi'
+import { useAIOperationBase, type GenerationStatus } from './useAIOperationBase'
+
+// Re-export for backwards compatibility
+export type { GenerationStatus }
 
 // Callbacks for different operation types
 export interface OperationCallbacks {
@@ -34,7 +37,7 @@ interface UseAIGenerationResult {
     callbacks: OperationCallbacks,
     conversationHistory?: ConversationMessage[],
     mode?: AIMode
-  ) => Promise<string>  // Returns the message directly
+  ) => Promise<string>
   reset: () => void
 }
 
@@ -108,9 +111,7 @@ function convertToReactFlow(diagram: PositionedDiagram): {
 }
 
 export function useAIGeneration(): UseAIGenerationResult {
-  const [status, setStatus] = useState<GenerationStatus>('idle')
-  const [error, setError] = useState<string | null>(null)
-  const [message, setMessage] = useState<string | null>(null)
+  const { status, error, message, setGenerating, setComplete, setError, reset } = useAIOperationBase()
 
   const executeAIOperation = useCallback(
     async (
@@ -121,49 +122,34 @@ export function useAIGeneration(): UseAIGenerationResult {
       conversationHistory?: ConversationMessage[],
       mode: AIMode = 'advanced'
     ) => {
-      setStatus('generating')
-      setError(null)
-      setMessage(null)
+      setGenerating()
 
       try {
-        // Build context from current diagram
         const context = buildContext(currentNodes, currentEdges)
-
-        // Execute operation with context and conversation history
         const response = await executeOperation(description, context, conversationHistory, mode)
 
         if (response.success) {
-          setMessage(response.message)
-
-          // Check if this is a full diagram generation
           if (response.operation_type === 'generate' && response.diagram) {
             const { nodes, edges } = convertToReactFlow(response.diagram)
             callbacks.onFullDiagram(nodes, edges)
           } else {
-            // Incremental operation - pass to merge handler
             callbacks.onMergeChanges(response)
           }
 
-          setStatus('complete')
-          return response.message || 'Done!'
+          const msg = response.message || 'Done!'
+          setComplete(msg)
+          return msg
         } else {
           throw new Error(response.message || 'Operation failed')
         }
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'Unknown error'
         setError(errorMessage)
-        setStatus('error')
-        throw err  // Re-throw so caller can handle
+        throw err
       }
     },
-    []
+    [setGenerating, setComplete, setError]
   )
-
-  const reset = useCallback(() => {
-    setStatus('idle')
-    setError(null)
-    setMessage(null)
-  }, [])
 
   return {
     status,

@@ -8,25 +8,14 @@ Uses GPT-5 for accurate component selection.
 import logging
 from typing import Any, Dict, List
 
-from openai import AsyncOpenAI
 from pydantic import BaseModel
 
 from app.config import settings
 from app.core.ai.agent_state import MultiAgentState, ComponentSpec
+from app.core.ai.client import get_openai_client
 from app.core.ai.prompts.component_prompt import get_component_prompt
 
 logger = logging.getLogger(__name__)
-
-# Lazy-loaded OpenAI client
-_client = None
-
-
-def get_openai_client() -> AsyncOpenAI:
-    """Get or create OpenAI client singleton."""
-    global _client
-    if _client is None:
-        _client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
-    return _client
 
 
 class ComponentListResponse(BaseModel):

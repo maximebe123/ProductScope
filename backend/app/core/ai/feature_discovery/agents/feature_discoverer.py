@@ -9,10 +9,10 @@ import json
 import logging
 from typing import Any, Dict, List
 
-from openai import AsyncOpenAI
 from pydantic import BaseModel, Field
 
 from app.config import settings
+from app.core.ai.client import get_openai_client
 from app.core.ai.feature_discovery.state import (
     FeatureDiscoveryState,
     DiscoveredFeature,
@@ -25,16 +25,6 @@ from app.core.ai.prompts.feature_discovery.feature_discoverer import (
 )
 
 logger = logging.getLogger(__name__)
-
-_client = None
-
-
-def get_openai_client() -> AsyncOpenAI:
-    """Get or create OpenAI client singleton."""
-    global _client
-    if _client is None:
-        _client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
-    return _client
 
 
 class DiscoveredFeaturesResponse(BaseModel):

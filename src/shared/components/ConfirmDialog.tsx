@@ -3,7 +3,8 @@
  * Reusable confirmation dialog with glow effect based on type
  */
 
-import { memo, useEffect, useCallback } from 'react'
+import { memo } from 'react'
+import ModalLayout from './ModalLayout'
 
 type DialogType = 'warning' | 'danger' | 'info' | 'success'
 
@@ -44,39 +45,15 @@ function ConfirmDialog({
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) {
-  // Handle escape key to close
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onCancel()
-      }
-    },
-    [onCancel]
-  )
-
-  useEffect(() => {
-    if (isOpen) {
-      window.addEventListener('keydown', handleKeyDown)
-      return () => window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [isOpen, handleKeyDown])
-
-  if (!isOpen) return null
-
   return (
-    <div
-      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-      onClick={onCancel}
+    <ModalLayout
+      isOpen={isOpen}
+      onClose={onCancel}
+      size="sm"
+      glowClassName={glowStyles[type]}
+      className="w-80"
     >
-      <div
-        className={`
-          bg-white rounded-xl
-          w-80 p-5
-          animate-fade-in
-          ${glowStyles[type]}
-        `}
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="p-5">
         {/* Title */}
         <h3 className="text-base font-semibold text-gray-900 mb-2">
           {title}
@@ -112,7 +89,7 @@ function ConfirmDialog({
           </button>
         </div>
       </div>
-    </div>
+    </ModalLayout>
   )
 }
 

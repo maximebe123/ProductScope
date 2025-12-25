@@ -3,6 +3,11 @@
  * Utilities for generating and parsing Mermaid styling syntax
  */
 
+import { PRESET_COLORS } from '../../../shared/constants/colors'
+
+// Re-export for backwards compatibility
+export { PRESET_COLORS }
+
 export interface NodeStyleOptions {
   fill?: string
   stroke?: string
@@ -25,25 +30,6 @@ export interface ParsedStyles {
   classAssignments: Map<string, string[]>
   linkStyles: Map<number | 'default', NodeStyleOptions>
 }
-
-// Preset colors for the color picker
-export const PRESET_COLORS = [
-  // Brand colors
-  '#0230a8', // primary blue
-  '#ffcf00', // secondary yellow
-  '#f0285c', // danger red
-  // Semantic colors
-  '#10b981', // success green
-  '#f97316', // warning orange
-  '#06b6d4', // info cyan
-  '#8b5cf6', // purple
-  // Basic colors
-  '#ffffff', // white
-  '#f3f4f6', // light gray
-  '#9ca3af', // gray
-  '#374151', // dark gray
-  '#000000', // black
-]
 
 // Predefined style themes
 export const STYLE_THEMES = [

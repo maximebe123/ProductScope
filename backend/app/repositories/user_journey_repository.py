@@ -41,8 +41,5 @@ class UserJourneyRepository(BaseRepository[UserJourney]):
         return await self.update(journey_id, status=status)
 
     async def count_by_project(self, project_id: str) -> int:
-        """Count user journeys in a project."""
-        result = await self.session.execute(
-            select(UserJourney).where(UserJourney.project_id == project_id)
-        )
-        return len(list(result.scalars().all()))
+        """Count user journeys in a project using SQL COUNT."""
+        return await self.count(filters={"project_id": project_id})

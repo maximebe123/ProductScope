@@ -2,14 +2,16 @@
  * Hook for AI flowchart generation with Mermaid.js
  */
 
-import { useState, useCallback } from 'react'
+import { useCallback } from 'react'
 import type { ConversationMessage, AIMode } from '../types/ai'
 import {
   executeFlowchartOperation,
   type FlowchartContext,
 } from '../services/flowchartApi'
+import { useAIOperationBase, type GenerationStatus } from './useAIOperationBase'
 
-type GenerationStatus = 'idle' | 'generating' | 'complete' | 'error'
+// Re-export for backwards compatibility
+export type { GenerationStatus }
 
 // Callbacks for flowchart operations
 export interface FlowchartOperationCallbacks {
@@ -32,9 +34,7 @@ interface UseFlowchartAIGenerationResult {
 }
 
 export function useFlowchartAIGeneration(): UseFlowchartAIGenerationResult {
-  const [status, setStatus] = useState<GenerationStatus>('idle')
-  const [error, setError] = useState<string | null>(null)
-  const [message, setMessage] = useState<string | null>(null)
+  const { status, error, message, setGenerating, setComplete, setError, reset } = useAIOperationBase()
 
   const executeAIOperation = useCallback(
     async (
@@ -44,12 +44,9 @@ export function useFlowchartAIGeneration(): UseFlowchartAIGenerationResult {
       conversationHistory?: ConversationMessage[],
       mode: AIMode = 'advanced'
     ) => {
-      setStatus('generating')
-      setError(null)
-      setMessage(null)
+      setGenerating()
 
       try {
-        // Execute operation
         const response = await executeFlowchartOperation(
           description,
           currentContext || undefined,
@@ -58,44 +55,33 @@ export function useFlowchartAIGeneration(): UseFlowchartAIGenerationResult {
         )
 
         if (response.success) {
-          setMessage(response.message)
-
           // Check if this is a full flowchart generation or modification
           if (response.mermaid_code) {
-            // Full generation or modification - use onFullFlowchart
             if (response.operation_type === 'generate') {
               callbacks.onFullFlowchart(response.mermaid_code)
             } else {
-              // For modify, delete, subgraph, expand, direction - also replace full code
               callbacks.onCodeUpdate(response.mermaid_code)
             }
           } else if (response.code_to_append) {
-            // Incremental addition
             const existingCode = currentContext?.mermaidCode || ''
             const newCode = existingCode + '\n' + response.code_to_append
             callbacks.onCodeUpdate(newCode)
           }
 
-          setStatus('complete')
-          return response.message || 'Done!'
+          const msg = response.message || 'Done!'
+          setComplete(msg)
+          return msg
         } else {
           throw new Error(response.message || 'Operation failed')
         }
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'Unknown error'
         setError(errorMessage)
-        setStatus('error')
         throw err
       }
     },
-    []
+    [setGenerating, setComplete, setError]
   )
-
-  const reset = useCallback(() => {
-    setStatus('idle')
-    setError(null)
-    setMessage(null)
-  }, [])
 
   return {
     status,

@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from .base import BaseRepository
@@ -68,21 +68,14 @@ class KPIRepository(BaseRepository[KPI]):
         return await self.update(kpi_id, status=status)
 
     async def count_by_project(self, project_id: str) -> int:
-        """Count KPIs in a project."""
-        result = await self.session.execute(
-            select(KPI).where(KPI.project_id == project_id)
-        )
-        return len(list(result.scalars().all()))
+        """Count KPIs in a project using SQL COUNT."""
+        return await self.count(filters={"project_id": project_id})
 
     async def count_by_category(self, project_id: str) -> dict[str, int]:
-        """Count KPIs by category for a project."""
+        """Count KPIs by category for a project using SQL GROUP BY."""
         result = await self.session.execute(
-            select(KPI).where(KPI.project_id == project_id)
+            select(KPI.category, func.count(KPI.id))
+            .where(KPI.project_id == project_id)
+            .group_by(KPI.category)
         )
-        kpis = list(result.scalars().all())
-
-        counts: dict[str, int] = {}
-        for kpi in kpis:
-            category = kpi.category.value
-            counts[category] = counts.get(category, 0) + 1
-        return counts
+        return {row[0].value: row[1] for row in result.all()}

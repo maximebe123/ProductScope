@@ -1,67 +1,13 @@
 from typing import List, Optional, Literal
 from pydantic import BaseModel, Field
-from enum import Enum
+from enum import Enum  # Keep for HandlePosition
 
-
-class CategoryId(str, Enum):
-    """Node category identifiers (7 categories for Solution Architecture)"""
-    APPLICATIONS = "applications"
-    DATA = "data"
-    MESSAGING = "messaging"
-    INTEGRATION = "integration"
-    SECURITY = "security"
-    OBSERVABILITY = "observability"
-    EXTERNAL = "external"
-
-
-class NodeTypeId(str, Enum):
-    """All 39 node types available for Solution Architecture diagrams"""
-    # Applications category (6)
-    WEBAPP = "webapp"
-    MOBILE = "mobile"
-    BACKEND = "backend"
-    API = "api"
-    FUNCTION = "function"
-    WORKER = "worker"
-    # Data category (7)
-    SQL = "sql"
-    NOSQL = "nosql"
-    KEYVALUE = "keyvalue"
-    GRAPH = "graph"
-    CACHE = "cache"
-    STORAGE = "storage"
-    DATALAKE = "datalake"
-    # Messaging category (5)
-    QUEUE = "queue"
-    STREAM = "stream"
-    PUBSUB = "pubsub"
-    EVENTBUS = "eventbus"
-    WEBHOOK = "webhook"
-    # Integration category (6)
-    GATEWAY = "gateway"
-    MESH = "mesh"
-    BFF = "bff"
-    LOADBALANCER = "loadbalancer"
-    CDN = "cdn"
-    ETL = "etl"
-    # Security category (5)
-    IDP = "idp"
-    AUTH = "auth"
-    SECRETS = "secrets"
-    WAF = "waf"
-    CERTIFICATE = "certificate"
-    # Observability category (5)
-    LOGGING = "logging"
-    METRICS = "metrics"
-    TRACING = "tracing"
-    ALERTING = "alerting"
-    DASHBOARD = "dashboard"
-    # External category (5)
-    ACTOR = "actor"
-    THIRDPARTY = "thirdparty"
-    LEGACY = "legacy"
-    PARTNER = "partner"
-    CLOUD = "cloud"
+# Import from centralized node registry (single source of truth)
+from app.core.ai.node_registry import (
+    CategoryId,
+    NodeTypeId,
+    NODE_TYPE_LAYERS,
+)
 
 
 class HandlePosition(str, Enum):
@@ -151,56 +97,9 @@ class GeneratedDiagram(BaseModel):
     edges: List[GeneratedEdge] = Field(..., description="All connections between nodes")
 
 
-# Mapping of node types to their default logical layers for Solution Architecture
-NODE_TYPE_LAYERS = {
-    # Layer 0: External actors and systems
-    NodeTypeId.ACTOR: 0,
-    NodeTypeId.PARTNER: 0,
-    NodeTypeId.THIRDPARTY: 0,
-    NodeTypeId.LEGACY: 0,
-    NodeTypeId.CLOUD: 0,
-
-    # Layer 1: Frontend applications
-    NodeTypeId.WEBAPP: 1,
-    NodeTypeId.MOBILE: 1,
-    NodeTypeId.CDN: 1,
-
-    # Layer 2: Integration / Entry points
-    NodeTypeId.GATEWAY: 2,
-    NodeTypeId.BFF: 2,
-    NodeTypeId.LOADBALANCER: 2,
-    NodeTypeId.WAF: 2,
-    NodeTypeId.MESH: 2,
-
-    # Layer 3: Services & APIs
-    NodeTypeId.API: 3,
-    NodeTypeId.BACKEND: 3,
-    NodeTypeId.FUNCTION: 3,
-    NodeTypeId.WORKER: 3,
-    NodeTypeId.AUTH: 3,
-    NodeTypeId.IDP: 3,
-    NodeTypeId.WEBHOOK: 3,
-    NodeTypeId.ETL: 3,
-
-    # Layer 4: Data & Messaging
-    NodeTypeId.SQL: 4,
-    NodeTypeId.NOSQL: 4,
-    NodeTypeId.KEYVALUE: 4,
-    NodeTypeId.GRAPH: 4,
-    NodeTypeId.CACHE: 4,
-    NodeTypeId.STORAGE: 4,
-    NodeTypeId.DATALAKE: 4,
-    NodeTypeId.QUEUE: 4,
-    NodeTypeId.STREAM: 4,
-    NodeTypeId.PUBSUB: 4,
-    NodeTypeId.EVENTBUS: 4,
-    NodeTypeId.SECRETS: 4,
-
-    # Layer 5: Observability (cross-cutting)
-    NodeTypeId.LOGGING: 5,
-    NodeTypeId.METRICS: 5,
-    NodeTypeId.TRACING: 5,
-    NodeTypeId.ALERTING: 5,
-    NodeTypeId.DASHBOARD: 5,
-    NodeTypeId.CERTIFICATE: 5,
-}
+# NODE_TYPE_LAYERS is imported from node_registry (single source of truth)
+# Re-exported here for backward compatibility:
+# from app.models.diagram import NODE_TYPE_LAYERS
+__all__ = ["CategoryId", "NodeTypeId", "NODE_TYPE_LAYERS", "HandlePosition",
+           "VolumeAttachment", "NodeData", "GeneratedNode", "EdgeData",
+           "GeneratedEdge", "DiagramDescription", "GeneratedDiagram"]

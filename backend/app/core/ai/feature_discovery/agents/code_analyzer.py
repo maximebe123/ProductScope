@@ -5,89 +5,23 @@ Analyzes the repository structure, patterns, and existing features.
 Uses GPT-5.2 for deep reasoning about code architecture.
 """
 
-import json
 import logging
-from typing import Any, Dict, List
-
-from openai import AsyncOpenAI
-from pydantic import BaseModel, Field
+from typing import Any, Dict
 
 from app.config import settings
+from app.core.ai.client import get_openai_client
 from app.core.ai.feature_discovery.state import FeatureDiscoveryState, CodeAnalysisResult
 from app.core.ai.prompts.feature_discovery.code_analyzer import (
     CODE_ANALYZER_SYSTEM,
     CODE_ANALYZER_PROMPT,
 )
+from app.utils.repository_formatting import (
+    format_file_tree,
+    format_key_files,
+    format_dependencies,
+)
 
 logger = logging.getLogger(__name__)
-
-_client = None
-
-
-def get_openai_client() -> AsyncOpenAI:
-    """Get or create OpenAI client singleton."""
-    global _client
-    if _client is None:
-        _client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
-    return _client
-
-
-def format_file_tree(file_list: List[str], max_items: int = 100) -> str:
-    """Format file tree for display."""
-    if not file_list:
-        return "(empty)"
-
-    # Limit files shown
-    files = file_list[:max_items]
-    tree = "\n".join(files)
-
-    if len(file_list) > max_items:
-        tree += f"\n... and {len(file_list) - max_items} more files"
-
-    return tree
-
-
-def format_key_files(key_files: List[dict], max_content_length: int = 2000) -> str:
-    """Format key files content for the prompt."""
-    if not key_files:
-        return "(no key files available)"
-
-    parts = []
-    for f in key_files:
-        path = f.get("path", "unknown")
-        content = f.get("content", "")
-        if content:
-            # Truncate long content
-            if len(content) > max_content_length:
-                content = content[:max_content_length] + "\n... (truncated)"
-            parts.append(f"### {path}\n```\n{content}\n```")
-        else:
-            parts.append(f"### {path}\n(content not available)")
-
-    return "\n\n".join(parts)
-
-
-def format_dependencies(repo_analysis: dict) -> str:
-    """Format package dependencies."""
-    parts = []
-
-    package_json = repo_analysis.get("package_json")
-    if package_json:
-        deps = package_json.get("dependencies", {})
-        dev_deps = package_json.get("devDependencies", {})
-        if deps:
-            parts.append("### package.json dependencies")
-            parts.append(json.dumps(deps, indent=2))
-        if dev_deps:
-            parts.append("### package.json devDependencies")
-            parts.append(json.dumps(dev_deps, indent=2))
-
-    requirements = repo_analysis.get("requirements_txt")
-    if requirements:
-        parts.append("### requirements.txt")
-        parts.append(requirements)
-
-    return "\n\n".join(parts) if parts else "(no dependencies found)"
 
 
 async def code_analyzer_agent(state: FeatureDiscoveryState) -> Dict[str, Any]:

@@ -2,7 +2,7 @@
  * Hook for AI mind map generation with CRUD operations
  */
 
-import { useState, useCallback } from 'react'
+import { useCallback } from 'react'
 import type { ConversationMessage, AIMode } from '../types/ai'
 import type { MindElixirData, NodeObj } from 'mind-elixir'
 import {
@@ -11,8 +11,10 @@ import {
   type MindMapOperationResponse,
 } from '../services/mindmapApi'
 import { NOTE_STYLE } from '../modules/mindmap/types/mindElixir'
+import { useAIOperationBase, type GenerationStatus } from './useAIOperationBase'
 
-type GenerationStatus = 'idle' | 'generating' | 'complete' | 'error'
+// Re-export for backwards compatibility
+export type { GenerationStatus }
 
 // Callbacks for mind map operations
 export interface MindMapOperationCallbacks {
@@ -50,7 +52,6 @@ function buildMindMapContext(data: MindElixirData | null): MindMapContext | unde
   const edges: MindMapContext['edges'] = []
 
   function traverse(node: NodeObj, parentId?: string) {
-    // Determine node type
     let nodeType = 'branch'
     if (!parentId) {
       nodeType = 'topic'
@@ -82,7 +83,6 @@ function buildMindMapContext(data: MindElixirData | null): MindMapContext | unde
 
 /**
  * Convert API response mindmap to MindElixir format
- * Backend now returns MindElixir tree format directly: { nodeData: { id, topic, children } }
  */
 function convertResponseToMindElixir(response: MindMapOperationResponse): MindElixirData | null {
   if (response.mindmap?.nodeData) {
@@ -106,7 +106,6 @@ function convertChangesToMergeFormat(response: MindMapOperationResponse): {
   } = {}
 
   if (response.nodes_to_add?.length) {
-    // Find parent IDs from edges_to_add
     const parentMap = new Map<string, string>()
     response.edges_to_add?.forEach((edge) => {
       parentMap.set(edge.target, edge.source)
@@ -135,9 +134,7 @@ function convertChangesToMergeFormat(response: MindMapOperationResponse): {
 }
 
 export function useMindMapAIGeneration(): UseMindMapAIGenerationResult {
-  const [status, setStatus] = useState<GenerationStatus>('idle')
-  const [error, setError] = useState<string | null>(null)
-  const [message, setMessage] = useState<string | null>(null)
+  const { status, error, message, setGenerating, setComplete, setError, reset } = useAIOperationBase()
 
   const executeAIOperation = useCallback(
     async (
@@ -147,15 +144,11 @@ export function useMindMapAIGeneration(): UseMindMapAIGenerationResult {
       conversationHistory?: ConversationMessage[],
       mode: AIMode = 'advanced'
     ) => {
-      setStatus('generating')
-      setError(null)
-      setMessage(null)
+      setGenerating()
 
       try {
-        // Build context from current mind map
         const context = buildMindMapContext(currentData)
 
-        // Execute operation
         const response = await executeMindMapOperation(
           description,
           context,
@@ -164,40 +157,30 @@ export function useMindMapAIGeneration(): UseMindMapAIGenerationResult {
         )
 
         if (response.success) {
-          setMessage(response.message)
-
-          // Check if this is a full mind map generation
           if (response.operation_type === 'generate' && response.mindmap) {
             const mindElixirData = convertResponseToMindElixir(response)
             if (mindElixirData) {
               callbacks.onFullMindMap(mindElixirData)
             }
           } else {
-            // Incremental operation
             const changes = convertChangesToMergeFormat(response)
             callbacks.onMergeChanges(changes)
           }
 
-          setStatus('complete')
-          return response.message || 'Done!'
+          const msg = response.message || 'Done!'
+          setComplete(msg)
+          return msg
         } else {
           throw new Error(response.message || 'Operation failed')
         }
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'Unknown error'
         setError(errorMessage)
-        setStatus('error')
         throw err
       }
     },
-    []
+    [setGenerating, setComplete, setError]
   )
-
-  const reset = useCallback(() => {
-    setStatus('idle')
-    setError(null)
-    setMessage(null)
-  }, [])
 
   return {
     status,

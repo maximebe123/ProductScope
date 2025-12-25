@@ -9,17 +9,14 @@ Can also use deterministic layout engine as fallback.
 import logging
 from typing import Any, Dict, List
 
-from openai import AsyncOpenAI
 from pydantic import BaseModel
 
 from app.config import settings
 from app.core.ai.agent_state import MultiAgentState, LayoutPosition
+from app.core.ai.client import get_openai_client
 from app.core.ai.prompts.layout_prompt import get_layout_prompt
 
 logger = logging.getLogger(__name__)
-
-# Lazy-loaded OpenAI client
-_client = None
 
 # Layout constants
 GRID_SIZE = 24
@@ -36,14 +33,6 @@ LAYER_Y_POSITIONS = {
     4: 900,   # Data
     5: 1100,  # Observability
 }
-
-
-def get_openai_client() -> AsyncOpenAI:
-    """Get or create OpenAI client singleton."""
-    global _client
-    if _client is None:
-        _client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
-    return _client
 
 
 class LayoutListResponse(BaseModel):

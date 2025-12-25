@@ -44,8 +44,5 @@ class FeatureRepository(BaseRepository[Feature]):
         return await self.update(feature_id, status=status)
 
     async def count_by_project(self, project_id: str) -> int:
-        """Count features in a project."""
-        result = await self.session.execute(
-            select(Feature).where(Feature.project_id == project_id)
-        )
-        return len(list(result.scalars().all()))
+        """Count features in a project using SQL COUNT."""
+        return await self.count(filters={"project_id": project_id})

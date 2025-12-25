@@ -140,7 +140,7 @@ export function useFeatureExtraction(): UseFeatureExtractionResult {
 
       case 'complete': {
         // Select all features by default
-        const candidatesWithSelection = (event.features || []).map(f => ({
+        const candidatesWithSelection = (event.features || []).map((f: CandidateFeature) => ({
           ...f,
           selected: true,
         }))

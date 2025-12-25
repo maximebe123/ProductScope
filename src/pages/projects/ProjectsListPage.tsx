@@ -25,6 +25,7 @@ import {
 import { projectApi, type Project, type ProjectStatus } from '../../services/projectApi'
 import { GitHubImportModal } from '../../components/GitHub'
 import { CreateProjectModal } from './components'
+import { formatDate } from '../../shared/utils/dateFormat'
 
 type ViewMode = 'grid' | 'list'
 
@@ -109,15 +110,6 @@ export function ProjectsListPage() {
     } catch (err) {
       alert(err instanceof Error ? err.message : 'Failed to archive project')
     }
-  }
-
-  const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr)
-    return date.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    })
   }
 
   return (

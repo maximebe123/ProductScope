@@ -18,7 +18,6 @@ import json
 import logging
 from typing import Any, AsyncGenerator, Dict, List, Optional, Type, get_origin, get_args
 
-from openai import AsyncOpenAI
 from openai.types.responses import (
     ResponseReasoningSummaryTextDeltaEvent,
     ResponseTextDeltaEvent,
@@ -26,20 +25,9 @@ from openai.types.responses import (
 )
 from pydantic import BaseModel, ValidationError
 
-from app.config import settings
+from app.core.ai.client import get_openai_client
 
 logger = logging.getLogger(__name__)
-
-# Lazy-loaded OpenAI client
-_client: Optional[AsyncOpenAI] = None
-
-
-def get_openai_client() -> AsyncOpenAI:
-    """Get or create OpenAI client singleton."""
-    global _client
-    if _client is None:
-        _client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
-    return _client
 
 
 # Models that support reasoning summaries via Responses API

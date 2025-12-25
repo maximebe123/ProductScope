@@ -7,6 +7,7 @@ import { memo } from 'react'
 import { useAIAssistantContext } from '../../../../shared/AIAssistant/AIAssistantProvider'
 import ChatHistory from '../../../../shared/AIAssistant/Chat/ChatHistory'
 import ChatInput from '../../../../shared/AIAssistant/Chat/ChatInput'
+import { getTypingMessage } from '../../../../shared/AIAssistant/utils/getTypingMessage'
 
 function FlowchartChatView() {
   const {
@@ -17,15 +18,6 @@ function FlowchartChatView() {
 
   const isProcessing = chatStatus === 'generating'
 
-  const getTypingMessage = () => {
-    switch (chatStatus) {
-      case 'generating':
-        return 'Thinking'
-      default:
-        return 'Processing'
-    }
-  }
-
   return (
     <div className="h-full flex flex-col bg-white">
       {/* Chat History */}
@@ -33,7 +25,7 @@ function FlowchartChatView() {
         <ChatHistory
           messages={messages}
           isTyping={isProcessing}
-          typingMessage={getTypingMessage()}
+          typingMessage={getTypingMessage(chatStatus)}
         />
       </div>
 

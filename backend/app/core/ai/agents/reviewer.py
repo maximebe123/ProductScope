@@ -8,24 +8,12 @@ Uses GPT-5 for deep quality analysis.
 import logging
 from typing import Any, Dict
 
-from openai import AsyncOpenAI
-
 from app.config import settings
 from app.core.ai.agent_state import MultiAgentState, QualityReview
+from app.core.ai.client import get_openai_client
 from app.core.ai.prompts.reviewer_prompt import get_reviewer_prompt
 
 logger = logging.getLogger(__name__)
-
-# Lazy-loaded OpenAI client
-_client = None
-
-
-def get_openai_client() -> AsyncOpenAI:
-    """Get or create OpenAI client singleton."""
-    global _client
-    if _client is None:
-        _client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
-    return _client
 
 
 async def reviewer_agent(state: MultiAgentState) -> Dict[str, Any]:

@@ -9,6 +9,7 @@ import { useAIAssistantContext } from '../AIAssistantProvider'
 import ChatHistory from './ChatHistory'
 import ChatInput from './ChatInput'
 import ConfirmDialog from '../../components/ConfirmDialog'
+import { getTypingMessage } from '../utils/getTypingMessage'
 
 interface ChatSidebarProps {
   isOpen: boolean
@@ -102,16 +103,6 @@ function ChatSidebar({ isOpen, onToggle }: ChatSidebarProps) {
 
   const isProcessing = chatStatus === 'generating'
 
-  // Determine typing indicator message
-  const getTypingMessage = () => {
-    switch (chatStatus) {
-      case 'generating':
-        return 'Thinking'
-      default:
-        return 'Processing'
-    }
-  }
-
   return (
     <aside
       ref={sidebarRef}
@@ -196,7 +187,7 @@ function ChatSidebar({ isOpen, onToggle }: ChatSidebarProps) {
           <ChatHistory
             messages={messages}
             isTyping={isProcessing}
-            typingMessage={getTypingMessage()}
+            typingMessage={getTypingMessage(chatStatus)}
             isStreaming={isStreaming}
             streamingAgent={streamingAgent}
             streamingContent={streamingContent}

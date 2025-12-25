@@ -8,25 +8,13 @@ Uses GPT-5 for deep reasoning about architecture patterns.
 import logging
 from typing import Any, Dict
 
-from openai import AsyncOpenAI
-
 from app.config import settings
 from app.core.ai.agent_state import MultiAgentState, ArchitecturePlan
+from app.core.ai.client import get_openai_client
 from app.core.ai.prompts.architect_prompt import get_architect_prompt
 from app.models.operations import DiagramContext
 
 logger = logging.getLogger(__name__)
-
-# Lazy-loaded OpenAI client
-_client = None
-
-
-def get_openai_client() -> AsyncOpenAI:
-    """Get or create OpenAI client singleton."""
-    global _client
-    if _client is None:
-        _client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
-    return _client
 
 
 async def architect_agent(state: MultiAgentState) -> Dict[str, Any]:

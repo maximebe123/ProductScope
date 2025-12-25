@@ -217,40 +217,10 @@ def create_initial_multi_agent_state(
 # VALIDATION HELPERS
 # =============================================================================
 
-# Valid node types (39 types organized by category)
-VALID_NODE_TYPES = {
-    # Applications
-    "webapp", "mobile", "backend", "api", "function", "worker",
-    # Data
-    "sql", "nosql", "keyvalue", "graph", "cache", "storage", "datalake",
-    # Messaging
-    "queue", "stream", "pubsub", "eventbus", "webhook",
-    # Integration
-    "gateway", "mesh", "bff", "loadbalancer", "cdn", "etl",
-    # Security
-    "idp", "auth", "secrets", "waf", "certificate",
-    # Observability
-    "logging", "metrics", "tracing", "alerting", "dashboard",
-    # External
-    "actor", "thirdparty", "legacy", "partner", "cloud",
-}
-
-# Valid protocol labels for edges
-VALID_PROTOCOLS = {
-    "REST", "REST/JSON", "GraphQL", "gRPC", "gRPC/TLS",
-    "WebSocket", "Socket.IO", "TCP", "TLS", "mTLS", "TLS/mTLS",
-    "AMQP", "Kafka", "Redis", "Memcached",
-    "PostgreSQL", "MySQL", "MongoDB", "Cassandra",
-    "HTTP", "HTTPS", "HTTP/2", "QUIC",
-    "S3", "GCS", "Azure Blob",
-}
-
-
-def validate_node_type(node_type: str) -> bool:
-    """Check if a node type is valid."""
-    return node_type.lower() in VALID_NODE_TYPES
-
-
-def validate_protocol(protocol: str) -> bool:
-    """Check if a protocol label is valid (case-insensitive)."""
-    return protocol in VALID_PROTOCOLS or protocol.upper() in VALID_PROTOCOLS
+# Import from centralized node registry (single source of truth)
+from .node_registry import (
+    VALID_NODE_TYPES,
+    VALID_PROTOCOLS,
+    validate_node_type,
+    validate_protocol,
+)

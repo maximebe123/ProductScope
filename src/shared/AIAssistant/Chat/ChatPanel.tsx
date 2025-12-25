@@ -8,6 +8,7 @@ import { X, MessageCircle } from 'lucide-react'
 import { useAIAssistantContext } from '../AIAssistantProvider'
 import ChatHistory from './ChatHistory'
 import ChatInput from './ChatInput'
+import { getTypingMessage } from '../utils/getTypingMessage'
 
 function ChatPanel() {
   const {
@@ -46,16 +47,6 @@ function ChatPanel() {
   if (activeMode !== 'chat') return null
 
   const isProcessing = chatStatus === 'generating'
-
-  // Determine typing indicator message
-  const getTypingMessage = () => {
-    switch (chatStatus) {
-      case 'generating':
-        return 'Thinking'
-      default:
-        return 'Processing'
-    }
-  }
 
   return (
     <div
@@ -106,7 +97,7 @@ function ChatPanel() {
         <ChatHistory
           messages={messages}
           isTyping={isProcessing}
-          typingMessage={getTypingMessage()}
+          typingMessage={getTypingMessage(chatStatus)}
           isStreaming={isStreaming}
           streamingAgent={streamingAgent}
           streamingContent={streamingContent}

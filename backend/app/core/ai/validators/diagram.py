@@ -9,25 +9,7 @@ Validates ReactFlow diagram structure:
 
 from typing import List, Optional, Set
 from ..graph_state import ValidationError
-
-
-# Valid node types for Solution Architecture diagrams (39 types)
-VALID_NODE_TYPES = {
-    # Applications (6)
-    "webapp", "mobile", "backend", "api", "function", "worker",
-    # Data (7)
-    "sql", "nosql", "keyvalue", "graph", "cache", "storage", "datalake",
-    # Messaging (5)
-    "queue", "stream", "pubsub", "eventbus", "webhook",
-    # Integration (6)
-    "gateway", "mesh", "bff", "loadbalancer", "cdn", "etl",
-    # Security (5)
-    "idp", "auth", "secrets", "waf", "certificate",
-    # Observability (5)
-    "logging", "metrics", "tracing", "alerting", "dashboard",
-    # External (5)
-    "actor", "thirdparty", "legacy", "partner", "cloud",
-}
+from ..node_registry import VALID_NODE_TYPES
 
 
 async def validate_diagram(tool_arguments: Optional[dict]) -> List[ValidationError]:
