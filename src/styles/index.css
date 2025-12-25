@@ -1,0 +1,238 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  /* Brand colors */
+  --color-primary: #0230a8;
+  --color-secondary: #ffcf00;
+  --color-danger: #f0285c;
+
+  /* Category colors */
+  --color-cat-data: #0230a8;
+  --color-cat-compute: #8b5cf6;
+  --color-cat-network: #10b981;
+  --color-cat-application: #f97316;
+  --color-cat-security: #f0285c;
+  --color-cat-integration: #eab308;
+  --color-cat-monitoring: #06b6d4;
+  --color-cat-external: #64748b;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* React Flow node styles */
+.react-flow__node {
+  cursor: grab;
+}
+
+.react-flow__node:active {
+  cursor: grabbing;
+}
+
+/* Edge styles */
+.react-flow__edge-path {
+  stroke: #cbd5e1;
+  stroke-width: 2;
+  transition: stroke 0.15s ease, stroke-width 0.15s ease;
+}
+
+.react-flow__edge.selected .react-flow__edge-path,
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke: #0230a8;
+  stroke-width: 2.5;
+}
+
+/* Make edge labels (color dots) clickable above nodes */
+.react-flow__edgelabel-renderer {
+  z-index: 1000 !important;
+  pointer-events: all;
+}
+
+/* Ensure edges are interactive */
+.react-flow__edges {
+  pointer-events: all;
+}
+
+/* Handle styles */
+.react-flow__handle {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: #94a3b8;
+  border: 2px solid white;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.react-flow__handle:hover {
+  background-color: #0230a8;
+  transform: scale(1.2);
+}
+
+.react-flow__handle-left {
+  left: -7px;
+}
+
+.react-flow__handle-right {
+  right: -7px;
+}
+
+/* Canvas drop zone highlight */
+.canvas-drop-active {
+  background-color: rgba(255, 207, 0, 0.05);
+  outline: 2px dashed #ffcf00;
+  outline-offset: -2px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes popoverIn {
+  from {
+    opacity: 0;
+    transform: translateX(-8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: popoverIn 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-slide-in {
+  animation: slideInRight 0.2s ease-out;
+}
+
+/* AI Assistant Animations */
+@keyframes slideUpFromBubble {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideDownToBubble {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+}
+
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes typingDot {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-slide-up-panel {
+  animation: slideUpFromBubble 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.animate-slide-down-panel {
+  animation: slideDownToBubble 0.2s ease-in;
+}
+
+.animate-message-in {
+  animation: messageSlideIn 0.2s ease-out;
+}
+
+.animate-typing-dot {
+  animation: typingDot 1.4s infinite ease-in-out;
+}
+
+.animate-typing-dot:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.animate-typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.animate-typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* Scrollbar styling */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
+}
+
+/* Tab content transition */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: fadeIn 0.2s ease-out;
+}
