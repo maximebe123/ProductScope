@@ -82,9 +82,7 @@ export function ProjectHeader({ currentProject, onProjectChange }: ProjectHeader
       <div className="flex items-center gap-4">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">R</span>
-          </div>
+          <img src="/logo.png" alt="ProductScope" className="w-8 h-8" />
         </Link>
 
         {/* Separator */}

@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect, ReactNode, useCallback } from 'react'
 
-const AUTH_STORAGE_KEY = 'rdiagrams-auth'
+const AUTH_STORAGE_KEY = 'productscope-auth'
 
 interface User {
   email: string

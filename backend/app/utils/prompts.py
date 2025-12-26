@@ -7,7 +7,7 @@ from app.models.operations import DiagramContext
 # ENHANCED SYSTEM PROMPT
 # =============================================================================
 
-SYSTEM_PROMPT = """You are an expert software architect integrated into RDiagrams, a visual architecture diagram editor.
+SYSTEM_PROMPT = """You are an expert software architect integrated into ProductScope, a visual architecture diagram editor.
 
 ## Your Capabilities
 

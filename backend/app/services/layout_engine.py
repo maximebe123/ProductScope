@@ -11,7 +11,7 @@ from app.models.responses import (
     Position,
 )
 
-# Layout constants matching RDiagrams grid
+# Layout constants matching ProductScope grid
 GRID_SIZE = 24  # Grid snapping increment
 NODE_WIDTH = 180
 NODE_HEIGHT = 80
@@ -40,7 +40,7 @@ class LayoutEngine:
             diagram: The AI-generated diagram with logical positions
 
         Returns:
-            A positioned diagram ready for RDiagrams
+            A positioned diagram ready for ProductScope
         """
         # Group nodes by layer
         layers: Dict[int, List[GeneratedNode]] = {}

@@ -37,10 +37,8 @@ export function HomePage() {
       <header className="bg-white/80 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">R</span>
-            </div>
-            <span className="font-semibold text-gray-900">R'Diagrams</span>
+            <img src="/logo.png" alt="ProductScope" className="w-8 h-8" />
+            <span className="font-semibold text-gray-900">ProductScope</span>
           </Link>
           <div className="flex items-center gap-4">
             {isAuthenticated ? (
@@ -230,10 +228,8 @@ export function HomePage() {
         <div className="max-w-6xl mx-auto px-6 py-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-primary rounded flex items-center justify-center">
-                <span className="text-white font-bold text-xs">R</span>
-              </div>
-              <span className="text-sm text-gray-500">R'Diagrams</span>
+              <img src="/logo.png" alt="ProductScope" className="w-6 h-6" />
+              <span className="text-sm text-gray-500">ProductScope</span>
             </div>
             <p className="text-sm text-gray-400">
               Création de diagrammes assistée par IA

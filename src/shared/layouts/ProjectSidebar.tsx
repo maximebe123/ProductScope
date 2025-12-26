@@ -36,7 +36,7 @@ interface ProjectSidebarProps {
   }
 }
 
-const SIDEBAR_COLLAPSED_KEY = 'rdiagrams-sidebar-collapsed'
+const SIDEBAR_COLLAPSED_KEY = 'productscope-sidebar-collapsed'
 
 export function ProjectSidebar({ projectId, counts }: ProjectSidebarProps) {
   const location = useLocation()

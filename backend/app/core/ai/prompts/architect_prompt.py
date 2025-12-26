@@ -8,7 +8,7 @@ Uses GPT-5 for deep reasoning about architecture patterns.
 from typing import Optional
 from app.models.operations import DiagramContext
 
-ARCHITECT_PROMPT = """You are an expert software architect analyzing a diagram request for RDiagrams.
+ARCHITECT_PROMPT = """You are an expert software architect analyzing a diagram request for ProductScope.
 
 ## Your Task
 Analyze the user's request and create a detailed architecture plan that will guide the other agents.

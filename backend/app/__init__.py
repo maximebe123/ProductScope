@@ -1,1 +1,1 @@
-# RDiagrams AI Backend
+# ProductScope AI Backend

@@ -1,5 +1,5 @@
 """
-Authentication module for RDiagrams.
+Authentication module for ProductScope.
 Provides JWT-based authentication and authorization.
 """
 

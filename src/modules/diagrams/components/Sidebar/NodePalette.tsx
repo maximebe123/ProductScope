@@ -13,7 +13,7 @@ import UserProfile from '../../../../shared/components/UserProfile'
 import DraggableNodeItem from './DraggableNodeItem'
 import CollapsedCategoryButton from './CollapsedCategoryButton'
 
-const COLLAPSED_STORAGE_KEY = 'rdiagrams-sidebar-collapsed'
+const COLLAPSED_STORAGE_KEY = 'productscope-sidebar-collapsed'
 
 const NodePalette = () => {
   const [searchQuery, setSearchQuery] = useState('')
@@ -89,21 +89,11 @@ const NodePalette = () => {
       `}
       >
         {isCollapsed ? (
-          <div className="flex flex-col items-center py-1">
-            <div className="text-xl font-bold leading-none tracking-tight">
-              <span className="text-secondary">R'</span>
-              <span className="text-primary">D</span>
-            </div>
-            <div className="text-[8px] text-gray-400 mt-1 uppercase tracking-widest">
-              Arch
-            </div>
-          </div>
+          <img src="/logo.png" alt="ProductScope" className="w-8 h-8" />
         ) : (
-          <div className="flex-1 min-w-0">
-            <h1 className="text-xl font-bold">
-              <span className="text-secondary">R'</span>
-              <span className="text-primary">Diagrams</span>
-            </h1>
+          <div className="flex items-center gap-2">
+            <img src="/logo.png" alt="ProductScope" className="w-8 h-8" />
+            <span className="font-semibold text-gray-900">ProductScope</span>
           </div>
         )}
       </div>

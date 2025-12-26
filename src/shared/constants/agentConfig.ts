@@ -15,7 +15,6 @@ import {
   Target,
   Package,
   Calculator,
-  Database,
 } from 'lucide-react'
 
 // =============================================================================

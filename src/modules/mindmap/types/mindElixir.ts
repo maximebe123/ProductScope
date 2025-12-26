@@ -40,7 +40,7 @@ export interface MindElixirState {
 }
 
 /**
- * R'Diagrams Brand Colors
+ * ProductScope Brand Colors
  * Primary: Blue #0230a8
  * Secondary: Yellow #ffcf00
  */
@@ -66,11 +66,11 @@ const BRAND = {
 }
 
 /**
- * R'Diagrams theme for MindElixir
- * Uses only blue and yellow shades from the brand DA
+ * ProductScope theme for MindElixir
+ * Uses only blue and yellow shades from the brand
  */
-export const RDIAGRAMS_THEME: Theme = {
-  name: 'rdiagrams',
+export const PRODUCTSCOPE_THEME: Theme = {
+  name: 'productscope',
   type: 'light',
   // Palette for branch colors - alternating blues and yellows
   palette: [

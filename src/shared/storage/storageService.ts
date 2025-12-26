@@ -2,11 +2,11 @@
  * Unified Storage Service
  * Provides namespaced localStorage access for all modules
  *
- * Key format: rdiagrams:{moduleId}:{key}
- * Example: rdiagrams:diagrams:autosave
+ * Key format: productscope:{moduleId}:{key}
+ * Example: productscope:diagrams:autosave
  */
 
-const STORAGE_PREFIX = 'rdiagrams'
+const STORAGE_PREFIX = 'productscope'
 
 /**
  * Storage Service Interface
@@ -99,7 +99,7 @@ function createStorageService(): StorageService {
     },
 
     /**
-     * Clear all RDiagrams data
+     * Clear all ProductScope data
      */
     clearAll(): void {
       const keysToRemove: string[] = []

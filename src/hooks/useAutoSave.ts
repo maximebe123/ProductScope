@@ -5,7 +5,7 @@ import { storageService } from '../shared/storage'
 import { migrateNodeType, isValidNodeType } from '../modules/diagrams/config/nodeConfig'
 
 // Legacy key for migration
-const LEGACY_STORAGE_KEY = 'rdiagrams-autosave'
+const LEGACY_STORAGE_KEY = 'productscope-autosave'
 
 // New storage key (within module namespace)
 const STORAGE_KEY = 'autosave'

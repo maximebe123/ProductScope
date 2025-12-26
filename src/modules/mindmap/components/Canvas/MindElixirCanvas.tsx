@@ -8,7 +8,7 @@ import MindElixir from 'mind-elixir'
 import 'mind-elixir/style.css'
 
 import type { MindElixirData, MindElixirInstance, NodeObj } from '../../types/mindElixir'
-import { RDIAGRAMS_THEME, NOTE_STYLE } from '../../types/mindElixir'
+import { PRODUCTSCOPE_THEME, NOTE_STYLE } from '../../types/mindElixir'
 import { createNewMindMap, generateId } from '../../utils/dataConverters'
 import { MindMapDock } from '../Toolbar/MindMapDock'
 
@@ -78,7 +78,7 @@ export default function MindElixirCanvas({
       keypress: true,
       allowUndo: true,
       locale: 'en',
-      theme: RDIAGRAMS_THEME,
+      theme: PRODUCTSCOPE_THEME,
       newTopicName: 'New Branch',
     })
 

@@ -5,7 +5,7 @@ from app.modules.flowchart.models import FlowchartContext
 
 def get_flowchart_system_prompt() -> str:
     """Get the base system prompt for flowchart operations"""
-    return """You are an expert flowchart designer integrated into RDiagrams Flowchart editor.
+    return """You are an expert flowchart designer integrated into ProductScope Flowchart editor.
 You create and modify flowcharts using Mermaid.js syntax.
 
 ## Your Capabilities

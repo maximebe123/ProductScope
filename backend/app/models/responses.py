@@ -47,7 +47,7 @@ class PositionedEdge(BaseModel):
 
 
 class PositionedDiagram(BaseModel):
-    """Complete diagram ready for RDiagrams import"""
+    """Complete diagram ready for ProductScope import"""
     version: str = "1.0"
     name: str
     exportedAt: str = ""

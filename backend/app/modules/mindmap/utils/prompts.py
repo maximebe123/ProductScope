@@ -5,7 +5,7 @@ from app.modules.mindmap.models import MindMapContext
 
 def get_mindmap_system_prompt() -> str:
     """Get the base system prompt for mind map operations"""
-    return """You are an expert brainstorming assistant integrated into RDiagrams Mind Map editor.
+    return """You are an expert brainstorming assistant integrated into ProductScope Mind Map editor.
 
 ## Your Capabilities
 

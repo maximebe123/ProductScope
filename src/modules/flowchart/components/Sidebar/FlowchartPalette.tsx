@@ -50,15 +50,7 @@ export default function FlowchartPalette({ onInsertSnippet }: FlowchartPalettePr
       <div className="flex flex-col bg-white border-r border-gray-200 w-[68px] shrink-0 h-full">
         {/* Compact header */}
         <div className="border-b border-gray-200 p-3 flex justify-center">
-          <div className="flex flex-col items-center py-1">
-            <div className="text-xl font-bold leading-none tracking-tight">
-              <span className="text-secondary">R'</span>
-              <span className="text-primary">D</span>
-            </div>
-            <div className="text-[8px] text-gray-400 mt-1 uppercase tracking-widest">
-              Flow
-            </div>
-          </div>
+          <img src="/logo.png" alt="ProductScope" className="w-8 h-8" />
         </div>
 
         {/* Module Selector - compact */}
@@ -96,10 +88,10 @@ export default function FlowchartPalette({ onInsertSnippet }: FlowchartPalettePr
     <div className="flex flex-col bg-white border-r border-gray-200 w-64 shrink-0 h-full">
       {/* Header */}
       <div className="border-b border-gray-200 p-4">
-        <h1 className="text-xl font-bold">
-          <span className="text-secondary">R'</span>
-          <span className="text-primary">Diagrams</span>
-        </h1>
+        <div className="flex items-center gap-2">
+          <img src="/logo.png" alt="ProductScope" className="w-8 h-8" />
+          <span className="font-semibold text-gray-900">ProductScope</span>
+        </div>
       </div>
 
       {/* Module Selector */}

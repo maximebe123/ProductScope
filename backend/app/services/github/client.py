@@ -87,7 +87,7 @@ class GitHubClient:
         """Get request headers with optional auth"""
         headers = {
             "Accept": "application/vnd.github.v3+json",
-            "User-Agent": "RDiagrams-GitHubImport/1.0",
+            "User-Agent": "ProductScope-GitHubImport/1.0",
         }
         if self.token:
             headers["Authorization"] = f"Bearer {self.token}"

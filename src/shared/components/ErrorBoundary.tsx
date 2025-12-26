@@ -72,7 +72,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     this.props.onError?.(error, errorInfo)
 
     // Log to console in development
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       console.error('ErrorBoundary caught an error:', error)
       console.error('Component stack:', errorInfo.componentStack)
     }
@@ -137,7 +137,7 @@ function DefaultErrorFallback({
   errorInfo,
   resetError,
 }: FallbackProps) {
-  const isDevelopment = process.env.NODE_ENV === 'development'
+  const isDevelopment = import.meta.env.DEV
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[200px] p-6 bg-red-50 border border-red-200 rounded-lg">

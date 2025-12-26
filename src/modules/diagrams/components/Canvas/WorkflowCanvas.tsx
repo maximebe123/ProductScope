@@ -28,7 +28,7 @@ const edgeTypes: EdgeTypes = {
 }
 
 const GRID_SIZE = 24
-const SNAP_STORAGE_KEY = 'rdiagrams-snap-to-grid'
+const SNAP_STORAGE_KEY = 'productscope-snap-to-grid'
 
 interface ContextMenuState {
   x: number
